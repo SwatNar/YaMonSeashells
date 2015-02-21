@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.8.3
+Created-By: 1.6.0_32-b05 (Sun Microsystems Inc.)
+Built-By: Arni Arent
+Built-Date: 2012-09-02 20:54:19
+Implementation-Version: a609b2076aacc0ef5ecf0b390205d01bb88ceae2
+

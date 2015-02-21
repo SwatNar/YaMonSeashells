@@ -1,0 +1,33 @@
+MaterialDef Sprite 
+{
+    MaterialParameters 
+    {
+        Texture2D Texture
+    }
+
+    Technique 
+    {
+        VertexShader   GLSL100 : 3d/shaders/Particle.vert
+        FragmentShader GLSL120 : 3d/shaders/Particle.frag
+
+        WorldParameters 
+        {
+            WorldViewProjectionMatrix
+            WorldViewMatrix
+            WorldMatrix
+            CameraPosition
+        }
+
+        RenderState 
+        {
+            Blend Alpha
+            PointSprite On
+            AlphaTestFalloff 0.01
+        }
+
+        Defines 
+        {
+            USE_TEXTURE : Texture
+        }
+    }
+}

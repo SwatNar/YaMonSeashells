@@ -1,0 +1,6 @@
+"Some (All) of graphic data in this software are free game resources distributed by REFMAP(http://www.tekepon.net/fsm).
+You must not use the graphic data which is in this software, for the purpose except playing this game. When you want to get these resources, go to the website above." 
+
+Rules of Usage:
+Although our resources are distributed as a free material, this does NOT mean "copyright abandoned". It only means "no charge to use" and "no need to ask our permission". All of the right of our graphic data is reserved by REFMAP.
+When you use our resources, please indicate in READ ME file (or in somewhere a player can recognize) author name "REFMAP", URL of this website (http://www.tekepon.net/fsm) and mention of using the resources of REFMAP in your game. Moreover, please clearly forbid extracting image data and using them from your game.
