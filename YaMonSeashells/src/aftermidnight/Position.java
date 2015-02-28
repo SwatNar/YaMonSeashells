@@ -8,6 +8,7 @@ import com.artemis.Component;
 
 public class Position extends Component {
 	private float x,y;
+  public boolean rendered = false;
 	
 	public Position ( float x, float y)
 	{
@@ -43,5 +44,10 @@ public class Position extends Component {
 	public void addY(float y) {
 		this.y += y;
 	}
-	
+  
+  public void setRendered()
+  {
+    rendered = true;
+  }
+  
 }
