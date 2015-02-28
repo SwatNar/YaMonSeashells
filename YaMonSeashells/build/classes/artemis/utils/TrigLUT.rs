@@ -1,0 +1,1 @@
+com.artemis.utils.TrigLUT
