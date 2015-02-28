@@ -53,8 +53,12 @@ public class DebugPointRenderer extends EntitySystem {
   protected void initialize() {
     spriteManager = new SpriteManager(1024, 1024, SpriteMesh.Strategy.KEEP_BUFFER, SharedVars.rootNode, SharedVars.assetManager);
     mySprite = spriteManager.createSpriteImage("2d/npc/npc0.png", true);
+<<<<<<< HEAD
     SharedVars.appStateManager.attach(spriteManager);
     // where is the fucking run button while in fullscreen?
+=======
+    //getStateManager().attach(spriteManager);
+>>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
     
     System.out.println("loaded sprite manager");
   };
@@ -70,6 +74,7 @@ public class DebugPointRenderer extends EntitySystem {
     Position position = pm.get(e);
     geom.move(position.getX(), position.getY(), 0f);
     SharedVars.rootNode.attachChild(geom);
+<<<<<<< HEAD
 */
     //			Entity e = entities.get(i);
       Position position = pm.get(e);
@@ -87,5 +92,15 @@ public class DebugPointRenderer extends EntitySystem {
       
 
 //    System.out.println("isnerted that hoe " + sprite.toString());
+=======
+  */
+//			Entity e = entities.get(i);
+      Position position = pm.get(e);
+
+      Sprite sprite = new Sprite(mySprite);
+      sprite.setPosition(position.getX(), position.getY(), 0f);
+
+    System.out.println("isnerted that hoe");
+>>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
   }
 }

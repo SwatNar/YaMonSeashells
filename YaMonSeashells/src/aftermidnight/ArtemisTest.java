@@ -76,7 +76,11 @@ public class ArtemisTest extends SimpleApplication {
     e.addToWorld();
 
     e = world.createEntity();
+<<<<<<< HEAD
     e.addComponent(new Position(0, 0));
+=======
+    e.addComponent(new Position(200, 100));
+>>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
     e.addComponent(new Velocity(100, 20));
     e.addToWorld();
 
@@ -85,8 +89,11 @@ public class ArtemisTest extends SimpleApplication {
     Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");  // create a simple material
     mat.setColor("Color", ColorRGBA.Blue);   // set color of material to blue
     geom.setMaterial(mat);                   // set the cube's material
+<<<<<<< HEAD
     // this audo predict sucks
     geom.move(1f, 1f,0);
+=======
+>>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
     rootNode.attachChild(geom);              // make the cube appear in the scene
 
     initKeys();
@@ -115,7 +122,10 @@ public class ArtemisTest extends SimpleApplication {
   @Override
   public void simpleUpdate(float tpf) {
     world.process();
+<<<<<<< HEAD
     
+=======
+>>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
   }
   private ActionListener actionListener = new ActionListener() {
     public void onAction(String name, boolean keyPressed, float tpf) {
