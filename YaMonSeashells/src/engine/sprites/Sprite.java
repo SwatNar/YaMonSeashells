@@ -1,10 +1,7 @@
 package engine.sprites;
 
 import com.jme3.math.ColorRGBA;
-<<<<<<< HEAD
-=======
 import com.jme3.math.FastMath;
->>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
 import com.jme3.math.Vector3f;
 import engine.sprites.SpriteMesh.Strategy;
 

@@ -124,9 +124,5 @@ public class SpriteManager extends AbstractAppState
    {
       super.update(tpf);
       for (SpriteMesh mesh : spriteMeshes) mesh.updateMesh(tpf);
-<<<<<<< HEAD
-      System.out.println("something");
-=======
->>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
    }
 }

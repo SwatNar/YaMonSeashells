@@ -13,14 +13,11 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import usandthem.Velocity;
 
 /**
  *
@@ -35,74 +32,91 @@ public class ArtemisTest extends SimpleApplication {
   public static void main(String[] args) {
 
     Logger.getLogger("").setLevel(Level.SEVERE);
+
     ArtemisTest app = new ArtemisTest();
+    //app.setDisplayFps(true);
+    //app.setDisplayStatView(false);
+    //app.setPauseOnLostFocus(false);
     app.start();
-
-
-    // Graphics
-    // Physics = box2d
-    // Logic
-    // Network
 
   }
 
   @Override
   public void simpleInitApp() {
 
+    // Setup
     SharedVars.assetManager = assetManager;
     SharedVars.rootNode = rootNode;
     SharedVars.guiNode = rootNode;
-
     myApp = this;
     SharedVars.appStateManager = myApp.getStateManager();
 
-    Vector3f defaultView = new Vector3f(0f, 0f, 25f);
-    //getCamera().setLocation(defaultView);
-    //getCamera().lookAtDirection(new Vector3f(0, 0f, 0f), Vector3f.UNIT_Y);
+    // Graphics
+    Vector3f defaultView = new Vector3f(10f, 10f, 25f);
+    getCamera().setLocation(defaultView);
+    getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
+    getFlyByCamera().setMoveSpeed(25);
 
-    getViewPort().setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
-    getFlyByCamera().setMoveSpeed(50);
-    getCamera().setLocation(new Vector3f(-15, 0, 55));
-    getCamera().lookAtDirection(new Vector3f(12, 7.5f, -15), Vector3f.UNIT_Y);
-
+    // World setup
     world = new World();
-    world.setSystem(new DebugPointRenderer());
+    //world.setSystem(new DebugPointRenderer()); // Sprite Render System
+    world.setSystem(new PlatformerRenderer());
     world.setSystem(new MovementSystem());
     world.initialize();
 
-
     Entity e = world.createEntity();
-    e.addComponent(new Position(100, 100));
+    e.addComponent(new Position(5, 5));
     e.addToWorld();
 
     e = world.createEntity();
-<<<<<<< HEAD
-    e.addComponent(new Position(0, 0));
-=======
-    e.addComponent(new Position(200, 100));
->>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
-    e.addComponent(new Velocity(100, 20));
+    e.addComponent(new Position(2, 2));
+    e.addComponent(new Velocity(-.001f, -.1f));
     e.addToWorld();
 
-    Box b = new Box(1, 1, 1); // create cube shape
-    Geometry geom = new Geometry("Box", b);  // create cube geometry from the shape
-    Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");  // create a simple material
-    mat.setColor("Color", ColorRGBA.Blue);   // set color of material to blue
-    geom.setMaterial(mat);                   // set the cube's material
-<<<<<<< HEAD
-    // this audo predict sucks
-    geom.move(1f, 1f,0);
-=======
->>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
-    rootNode.attachChild(geom);              // make the cube appear in the scene
+    randomFill(100);
 
+    // Input
     initKeys();
+
+    // Logic
+
+    // Network
+
+  }
+
+  private void randomFill(int max) {
+
+    Random rand = new Random();
+    int min = 0;
+
+    for (int x = min; x < max; x++) {
+      Entity e = world.createEntity();
+      
+      e.addComponent(new Position(rand.nextFloat() * 50, rand.nextFloat() * 50));
+      world.addEntity(e);
+    }
+  }
+
+  private void fillScreen(int max) {
+
+    int min = 0;
+
+    for (int x = min; x < max; x++) {
+      for (int y = min; y < max; y++) {
+        Entity e = world.createEntity();
+        e.addComponent(new Position(x, y));
+        world.addEntity(e);
+      }
+    }
+
+    Entity e = world.createEntity();
+    e.addComponent(new Position(min + (int) (Math.random() * max), min + (int) (Math.random() * max)));
+    world.addEntity(e);
 
 
   }
 
   private void initKeys() {
-    // You can map one or several inputs to one named action
     inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_P));
     inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
     inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
@@ -113,7 +127,7 @@ public class ArtemisTest extends SimpleApplication {
     inputManager.addMapping("Alt 3", new KeyTrigger(KeyInput.KEY_F));
     inputManager.addMapping("Alt 4", new KeyTrigger(KeyInput.KEY_G));
     inputManager.addMapping("Rotate", new KeyTrigger(KeyInput.KEY_SPACE), new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-    // Add the names to the action listener.
+
     inputManager.addListener(actionListener, "Pause");
     inputManager.addListener(analogListener, "Left", "Right", "Rotate", "Up", "Down", "Alt 1", "Alt 2", "Alt 3", "Alt 4");
 
@@ -122,10 +136,7 @@ public class ArtemisTest extends SimpleApplication {
   @Override
   public void simpleUpdate(float tpf) {
     world.process();
-<<<<<<< HEAD
-    
-=======
->>>>>>> 1fe31e5d5fcc5d45b1ffbd1b4aef846a4bc18ddc
+    world.setDelta((tpf));
   }
   private ActionListener actionListener = new ActionListener() {
     public void onAction(String name, boolean keyPressed, float tpf) {
@@ -141,13 +152,7 @@ public class ArtemisTest extends SimpleApplication {
     public void onAnalog(String name, float value, float tpf) {
       if (isRunning) {
         if (name.equals("Rotate")) {
-          System.out.println("adding a noob");
-          int min = -15;
-          int max = 15;
-          Entity e = world.createEntity();
-          e.addComponent(new Position(min + (int) (Math.random() * max), min + (int) (Math.random() * max)));
-          world.addEntity(e);
-
+          randomFill(100);
         }
         if (name.equals("Right")) {
         }

@@ -5,7 +5,6 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
-import usandthem.Velocity;
 
 public class MovementSystem extends EntityProcessingSystem {
 	
