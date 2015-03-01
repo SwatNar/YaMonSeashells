@@ -4,6 +4,11 @@
  */
 package aftermidnight;
 
+import aftermidnight.components.Position;
+import aftermidnight.components.Root;
+import aftermidnight.components.Velocity;
+import aftermidnight.systems.MovementSystem;
+import aftermidnight.systems.PlatformerRenderer;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.jme3.app.SimpleApplication;
@@ -28,6 +33,7 @@ public class ArtemisTest extends SimpleApplication {
   private World world;
   private boolean isRunning = true;
   public static SimpleApplication myApp;
+  private float fieldOfView = 150f;
 
   public static void main(String[] args) {
 
@@ -48,11 +54,12 @@ public class ArtemisTest extends SimpleApplication {
     SharedVars.assetManager = assetManager;
     SharedVars.rootNode = rootNode;
     SharedVars.guiNode = rootNode;
+    SharedVars.paused = false;
     myApp = this;
     SharedVars.appStateManager = myApp.getStateManager();
 
     // Graphics
-    Vector3f defaultView = new Vector3f(10f, 10f, 25f);
+    Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 75f);
     getCamera().setLocation(defaultView);
     getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
     getFlyByCamera().setMoveSpeed(25);
@@ -63,17 +70,6 @@ public class ArtemisTest extends SimpleApplication {
     world.setSystem(new PlatformerRenderer());
     world.setSystem(new MovementSystem());
     world.initialize();
-
-    Entity e = world.createEntity();
-    e.addComponent(new Position(5, 5));
-    e.addToWorld();
-
-    e = world.createEntity();
-    e.addComponent(new Position(2, 2));
-    e.addComponent(new Velocity(-.001f, -.1f));
-    e.addToWorld();
-
-    randomFill(100);
 
     // Input
     initKeys();
@@ -91,14 +87,20 @@ public class ArtemisTest extends SimpleApplication {
 
     for (int x = min; x < max; x++) {
       Entity e = world.createEntity();
-      
-      e.addComponent(new Position(rand.nextFloat() * 50, rand.nextFloat() * 50));
+
+      e.addComponent(new Position(rand.nextFloat() * fieldOfView, rand.nextFloat() * fieldOfView));
+      e.addComponent(new Velocity(rand.nextFloat() * 20f - 10f, rand.nextFloat() * 20f - 10f));
+      if (rand.nextFloat() < .2f) {
+        e.addComponent(new Root(true));
+
+      }
+
       world.addEntity(e);
+
     }
   }
 
   private void fillScreen(int max) {
-
     int min = 0;
 
     for (int x = min; x < max; x++) {
@@ -106,6 +108,7 @@ public class ArtemisTest extends SimpleApplication {
         Entity e = world.createEntity();
         e.addComponent(new Position(x, y));
         world.addEntity(e);
+
       }
     }
 
@@ -133,15 +136,18 @@ public class ArtemisTest extends SimpleApplication {
 
   }
 
+  private void initController() {
+  }
+
   @Override
   public void simpleUpdate(float tpf) {
     world.process();
-    world.setDelta((tpf));
+    world.setDelta(tpf);
   }
   private ActionListener actionListener = new ActionListener() {
     public void onAction(String name, boolean keyPressed, float tpf) {
       if (name.equals("Pause") && !keyPressed) {
-        isRunning = !isRunning;
+        SharedVars.paused = !SharedVars.paused;
       }
     }
   };
@@ -150,27 +156,32 @@ public class ArtemisTest extends SimpleApplication {
     float scale = 1f;
 
     public void onAnalog(String name, float value, float tpf) {
-      if (isRunning) {
-        if (name.equals("Rotate")) {
-          randomFill(100);
+      if (name.equals("Rotate")) {
+        randomFill(1);
+      }
+      if (name.equals("Right")) {
+      }
+      if (name.equals("Left")) {
+      }
+      if (name.equals("Up")) {
+      }
+      if (name.equals("Down")) {
+      }
+      if (name.equals("Alt 1")) {
+        System.out.println("Alt 1 = REMOVING " + SharedVars.rootNode.getChildren().size() + " objects");
+        for (int x = 0; x < SharedVars.rootNode.getChildren().size(); x++) {
         }
-        if (name.equals("Right")) {
-        }
-        if (name.equals("Left")) {
-        }
-        if (name.equals("Up")) {
-        }
-        if (name.equals("Down")) {
-        }
-        if (name.equals("Alt 1")) {
-        }
-        if (name.equals("Alt 2")) {
-        }
-        if (name.equals("Alt 3")) {
-        }
-        if (name.equals("Alt 4")) {
-        }
-      } else {
+      }
+      if (name.equals("Alt 2")) {
+        System.out.println("Alt 2");
+      }
+      if (name.equals("Alt 3")) {
+        System.out.println("Alt 3");
+
+      }
+      if (name.equals("Alt 4")) {
+        System.out.println("Alt 4");
+        System.out.println("total entities: " + SharedVars.rootNode.getChildren().size());
       }
     }
   };

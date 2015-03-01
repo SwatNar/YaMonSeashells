@@ -20,5 +20,5 @@ public class SharedVars
 	public static Node rootNode;
 	public static Node guiNode;
   public static AppStateManager appStateManager;
-  
+  public static boolean paused = false;
 }
