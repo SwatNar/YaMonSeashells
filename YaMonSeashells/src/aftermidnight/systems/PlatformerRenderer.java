@@ -5,6 +5,7 @@
 package aftermidnight.systems;
 
 import aftermidnight.SharedVars;
+import aftermidnight.components.PlatformRendererSpatial;
 import aftermidnight.components.Position;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -20,7 +21,6 @@ import com.jme3.scene.shape.Box;
 import engine.sprites.SpriteImage;
 import engine.sprites.SpriteManager;
 import java.util.Random;
-import java.util.UUID;
 
 /**
  *
@@ -30,6 +30,10 @@ public class PlatformerRenderer extends EntitySystem {
 
   @Mapper
   ComponentMapper<Position> pm;
+  
+  @Mapper
+  ComponentMapper<PlatformRendererSpatial> prsMapper;
+    
   private SpriteManager spriteManager;
   private SpriteImage mySprite;
 
@@ -44,16 +48,19 @@ public class PlatformerRenderer extends EntitySystem {
     for (int i = 0; i < s; i++) {
       Entity e = entities.get(i);
       Position position = pm.get(e);
-      Spatial thisObject = SharedVars.rootNode.getChild("" + e.getUuid());
-      thisObject.setLocalTranslation(position.getX(), position.getY(), 0f);
+//      Spatial thisObject = SharedVars.rootNode.getChild("" + e.getUuid());
+//      if (thisObject.getLocalTranslation().x != position.getX() || thisObject.getLocalTranslation().y != position.getY())
+//        thisObject.setLocalTranslation(position.getX(), position.getY(), 0f);
+      Spatial thisObject = prsMapper.get(e).getSpatial();
+      if (thisObject.getLocalTranslation().x != position.getX() || thisObject.getLocalTranslation().y != position.getY())
+        thisObject.setLocalTranslation(position.getX(), position.getY(), 0f);
+      
     }
   }
 
   @Override
   protected void removed(Entity e) {
-    Spatial thisObject = SharedVars.rootNode.getChild("" + e.getUuid());
-    thisObject.removeFromParent();
-//    e.deleteFromWorld();
+    prsMapper.get(e).getSpatial().removeFromParent();
 
   }
 
@@ -83,7 +90,9 @@ public class PlatformerRenderer extends EntitySystem {
 
     mat2.setColor("Color", new ColorRGBA(r, g, b, 1));
     red.setMaterial(mat2);
-    red.setName("" + e.getUuid());
+    
+    e.addComponent(new PlatformRendererSpatial(red));
+    
     //System.out.println("made this noob: " + e.getUuid());
 
     red.move(position.getX(), position.getY(), 0);

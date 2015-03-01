@@ -60,11 +60,13 @@ public class ArtemisTest extends SimpleApplication {
     SharedVars.appStateManager = myApp.getStateManager();
 
     // Graphics
-    Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 750f);
+    //Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 750f);
+    Vector3f defaultView = new Vector3f(0, 0, 750f);
     getCamera().setLocation(defaultView);
     getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
     getFlyByCamera().setMoveSpeed(25);
-
+    cam.setFrustumPerspective(45, settings.getWidth() / settings.getHeight(), 1, 1000);
+    
     // World setup
     world = new World();
     //world.setSystem(new DebugPointRenderer()); // Sprite Render System
@@ -73,6 +75,8 @@ public class ArtemisTest extends SimpleApplication {
     world.setSystem(new OutOfBoundsSystem());
     world.initialize();
 
+    randomFill(25000);
+    
     // Input
     initKeys();
 
@@ -160,6 +164,7 @@ public class ArtemisTest extends SimpleApplication {
     public void onAnalog(String name, float value, float tpf) {
       if (name.equals("Rotate")) {
         randomFill(100);
+        
       }
       if (name.equals("Right")) {
       }
@@ -178,7 +183,7 @@ public class ArtemisTest extends SimpleApplication {
         System.out.println("Alt 2");
       }
       if (name.equals("Alt 3")) {
-        System.out.println("Alt 3");
+        System.out.println("Alt 3 = " + SharedVars.rootNode.getChildren().size() + " objects");
 
       }
       if (name.equals("Alt 4")) {
