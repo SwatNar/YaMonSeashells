@@ -25,8 +25,7 @@ public class MovementSystem extends EntityProcessingSystem {
   }
 
   protected void process(Entity e) {
-    System.out.print("PROCESS " + e.getUuid());
-    
+
     Position position = pm.get(e);
     Velocity velocity = vm.get(e);
     if (SharedVars.paused)

@@ -8,6 +8,7 @@ import aftermidnight.components.Position;
 import aftermidnight.components.Root;
 import aftermidnight.components.Velocity;
 import aftermidnight.systems.MovementSystem;
+import aftermidnight.systems.OutOfBoundsSystem;
 import aftermidnight.systems.PlatformerRenderer;
 import com.artemis.Entity;
 import com.artemis.World;
@@ -59,7 +60,7 @@ public class ArtemisTest extends SimpleApplication {
     SharedVars.appStateManager = myApp.getStateManager();
 
     // Graphics
-    Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 75f);
+    Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 750f);
     getCamera().setLocation(defaultView);
     getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
     getFlyByCamera().setMoveSpeed(25);
@@ -69,6 +70,7 @@ public class ArtemisTest extends SimpleApplication {
     //world.setSystem(new DebugPointRenderer()); // Sprite Render System
     world.setSystem(new PlatformerRenderer());
     world.setSystem(new MovementSystem());
+    world.setSystem(new OutOfBoundsSystem());
     world.initialize();
 
     // Input
@@ -157,7 +159,7 @@ public class ArtemisTest extends SimpleApplication {
 
     public void onAnalog(String name, float value, float tpf) {
       if (name.equals("Rotate")) {
-        randomFill(1);
+        randomFill(100);
       }
       if (name.equals("Right")) {
       }

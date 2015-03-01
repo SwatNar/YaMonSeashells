@@ -29,7 +29,7 @@ public class OutOfBoundsSystem extends EntityProcessingSystem {
     float x = pm.get(e).getX();
     float y = pm.get(e).getY();
     
-    float oob = 250f;
+    float oob = 500f;
     
     if (x > oob || x < 0f-oob || y > oob || y < 0f-oob)
     {
