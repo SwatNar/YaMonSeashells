@@ -8,7 +8,9 @@ package aftermidnight;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.input.InputManager;
 import com.jme3.scene.Node;
+import java.util.Random;
 
 /**
  *
@@ -21,4 +23,7 @@ public class SharedVars
 	public static Node guiNode;
   public static AppStateManager appStateManager;
   public static boolean paused = false;
+  public static InputManager inputManager;
+  public static Random random;
 }
+

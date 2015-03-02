@@ -7,6 +7,7 @@ package aftermidnight;
 import aftermidnight.components.Position;
 import aftermidnight.components.Root;
 import aftermidnight.components.Velocity;
+import aftermidnight.systems.SpriteRenderer;
 import aftermidnight.systems.MovementSystem;
 import aftermidnight.systems.OutOfBoundsSystem;
 import aftermidnight.systems.PlatformerRenderer;
@@ -56,26 +57,30 @@ public class ArtemisTest extends SimpleApplication {
     SharedVars.rootNode = rootNode;
     SharedVars.guiNode = rootNode;
     SharedVars.paused = false;
+    SharedVars.inputManager = inputManager;
+    SharedVars.random = new Random(System.currentTimeMillis());
+    
     myApp = this;
+    
     SharedVars.appStateManager = myApp.getStateManager();
 
     // Graphics
     //Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 750f);
-    Vector3f defaultView = new Vector3f(0, 0, 750f);
+    Vector3f defaultView = new Vector3f(0, 0, 75f);
     getCamera().setLocation(defaultView);
     getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
     getFlyByCamera().setMoveSpeed(25);
-    cam.setFrustumPerspective(45, settings.getWidth() / settings.getHeight(), 1, 1000);
+    //cam.setFrustumPerspective(45, settings.getWidth() / settings.getHeight(), 1, 900f);
     
     // World setup
     world = new World();
-    //world.setSystem(new DebugPointRenderer()); // Sprite Render System
-    world.setSystem(new PlatformerRenderer());
+    world.setSystem(new SpriteRenderer()); // Sprite Render System
+    //world.setSystem(new PlatformerRenderer());
     world.setSystem(new MovementSystem());
     world.setSystem(new OutOfBoundsSystem());
     world.initialize();
 
-    randomFill(25000);
+    randomFill(250);
     
     // Input
     initKeys();
@@ -94,7 +99,7 @@ public class ArtemisTest extends SimpleApplication {
     for (int x = min; x < max; x++) {
       Entity e = world.createEntity();
 
-      e.addComponent(new Position(rand.nextFloat() * fieldOfView, rand.nextFloat() * fieldOfView));
+      e.addComponent(new Position(rand.nextFloat() * fieldOfView - fieldOfView/2f, rand.nextFloat() * fieldOfView - fieldOfView/2f));
       e.addComponent(new Velocity(rand.nextFloat() * 20f - 10f, rand.nextFloat() * 20f - 10f));
       if (rand.nextFloat() < .2f) {
         e.addComponent(new Root(true));
@@ -183,7 +188,7 @@ public class ArtemisTest extends SimpleApplication {
         System.out.println("Alt 2");
       }
       if (name.equals("Alt 3")) {
-        System.out.println("Alt 3 = " + SharedVars.rootNode.getChildren().size() + " objects");
+        System.out.println("Alt 3 = " + SharedVars.rootNode.getChildren().size() + " objects / " + world.getEntityManager().getTotalAdded() + " entities");
 
       }
       if (name.equals("Alt 4")) {

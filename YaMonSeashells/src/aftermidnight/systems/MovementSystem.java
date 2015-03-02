@@ -30,7 +30,6 @@ public class MovementSystem extends EntityProcessingSystem {
     Velocity velocity = vm.get(e);
     if (SharedVars.paused)
     {
-      System.out.println("Game Paused.");
       return;
     }
     
