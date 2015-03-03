@@ -11,7 +11,7 @@ public class AtlasSprite implements Comparable<AtlasSprite>, Cloneable
    private TextureAtlas  atlas;
    private int           atlasStartX;
    private int           atlasStartY;
-   private BufferedImage image;
+   private transient BufferedImage image;
    private String        id;              //to prevent creating the same atlasSprite from image, if user is nab.
    
    private float atlasStartU;

@@ -36,8 +36,8 @@ public class MovementSystem extends EntityProcessingSystem {
     Root rooted = rootMapper.getSafe(e);
     if (rooted == null || !rooted.getRooted())
     {
-      position.addX(velocity.getX() * world.getDelta());
-      position.addY(velocity.getY() * world.getDelta());
+      position.addX(velocity.getX() * velocity.getMultiplier() * world.getDelta());
+      position.addY(velocity.getY() * velocity.getMultiplier() * world.getDelta());
     }
   }
 }

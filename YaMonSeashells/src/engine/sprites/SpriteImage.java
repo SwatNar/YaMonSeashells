@@ -4,8 +4,8 @@ import engine.sprites.atlas.AtlasSprite;
 
 public final class SpriteImage
 {
-   private final AtlasSprite sprite;
-   private final SpriteMesh whereToPut;
+   private final transient AtlasSprite sprite;
+   private final transient SpriteMesh whereToPut;
 
    public SpriteImage(AtlasSprite sprite, SpriteMesh whereToPut)
    {

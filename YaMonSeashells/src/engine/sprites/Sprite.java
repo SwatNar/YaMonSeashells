@@ -13,7 +13,7 @@ public class Sprite {
   private float size = 1f;
   private boolean deleted = false;
   private ColorRGBA color = new ColorRGBA(ColorRGBA.White);
-  private SpriteImage image;
+  private transient SpriteImage image;
   protected int currentFrame;
   /**
    * The frame currently being displayed

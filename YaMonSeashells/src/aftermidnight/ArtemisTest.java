@@ -10,7 +10,8 @@ import aftermidnight.components.Velocity;
 import aftermidnight.systems.SpriteRenderer;
 import aftermidnight.systems.MovementSystem;
 import aftermidnight.systems.OutOfBoundsSystem;
-import aftermidnight.systems.PlatformerRenderer;
+import aftermidnight.systems.SpriteCollisionSystem;
+import aftermidnight.systems.UserInputSystem;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.jme3.app.SimpleApplication;
@@ -20,8 +21,13 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Quad;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,14 +43,16 @@ public class ArtemisTest extends SimpleApplication {
   public static SimpleApplication myApp;
   private float fieldOfView = 150f;
 
+
   public static void main(String[] args) {
+
 
     Logger.getLogger("").setLevel(Level.SEVERE);
 
     ArtemisTest app = new ArtemisTest();
     //app.setDisplayFps(true);
     //app.setDisplayStatView(false);
-    //app.setPauseOnLostFocus(false);
+    app.setPauseOnLostFocus(false);
     app.start();
 
   }
@@ -53,55 +61,86 @@ public class ArtemisTest extends SimpleApplication {
   public void simpleInitApp() {
 
     // Setup
+    SharedVars.paused = true;
     SharedVars.assetManager = assetManager;
     SharedVars.rootNode = rootNode;
     SharedVars.guiNode = rootNode;
-    SharedVars.paused = false;
     SharedVars.inputManager = inputManager;
     SharedVars.random = new Random(System.currentTimeMillis());
-    
+
     myApp = this;
-    
+
     SharedVars.appStateManager = myApp.getStateManager();
 
     // Graphics
     //Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 750f);
-    Vector3f defaultView = new Vector3f(0, 0, 75f);
+    Vector3f defaultView = new Vector3f(0, 0, 175f);
     getCamera().setLocation(defaultView);
     getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
     getFlyByCamera().setMoveSpeed(25);
-    //cam.setFrustumPerspective(45, settings.getWidth() / settings.getHeight(), 1, 900f);
-    
+    //cam.setFrustumPerspective(45f, settings.getWidth() / settings.getHeight() + 0f, 1f, 900f);
+
     // World setup
+
+    drawBox(100f);
+
     world = new World();
+    world.setSystem(new UserInputSystem());
+    world.setSystem(new MovementSystem());
+    world.setSystem(new SpriteCollisionSystem());
+    world.setSystem(new OutOfBoundsSystem());
     world.setSystem(new SpriteRenderer()); // Sprite Render System
     //world.setSystem(new PlatformerRenderer());
-    world.setSystem(new MovementSystem());
-    world.setSystem(new OutOfBoundsSystem());
     world.initialize();
 
-    randomFill(250);
-    
+    randomFill(5000);
+
     // Input
-    initKeys();
+    //initKeys();
 
     // Logic
 
     // Network
 
+    SharedVars.paused = false;
+
   }
 
-  private void randomFill(int max) {
+  private void drawBox(float size) {
+    Quad quad = new Quad();
+    quad.updateGeometry(size, size);
+    
+    SharedVars.dumbCollisionGlobal = new Geometry("Box", quad);
+    //red.setLocalTranslation(new Vector3f(1, 3, 1));
+    Material mat2 = new Material(SharedVars.assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
     Random rand = new Random();
+
+    float r = rand.nextFloat();// * .5f + 0.5f;
+    float g = rand.nextFloat();// * .5f + 0.5f;
+    float b = rand.nextFloat();// * .5f + 0.5f;
+
+    //mat2.setColor("Color", new ColorRGBA(r, g, b, .1f));
+    SharedVars.dumbCollisionGlobal.setMaterial(mat2);
+    SharedVars.dumbCollisionGlobal.setLocalTranslation(0f-size/2, 0f-size/2, 0f);
+    SharedVars.dumbCollisionGlobal.setQueueBucket(Bucket.Transparent);
+    SharedVars.dumbCollisionGlobal.rotate((float) Math.PI, 0f, 0f);
+    
+    SharedVars.rootNode.attachChild(SharedVars.dumbCollisionGlobal);    
+    
+  }
+  
+  private void randomFill(int max) {
+
+    
     int min = 0;
 
     for (int x = min; x < max; x++) {
       Entity e = world.createEntity();
 
-      e.addComponent(new Position(rand.nextFloat() * fieldOfView - fieldOfView/2f, rand.nextFloat() * fieldOfView - fieldOfView/2f));
-      e.addComponent(new Velocity(rand.nextFloat() * 20f - 10f, rand.nextFloat() * 20f - 10f));
-      if (rand.nextFloat() < .2f) {
+      e.addComponent(new Position(SharedVars.random.nextFloat() * fieldOfView - fieldOfView / 2f, SharedVars.random.nextFloat() * fieldOfView - fieldOfView / 2f));
+      e.addComponent(new Velocity(SharedVars.random.nextFloat() * 20f - 10f, SharedVars.random.nextFloat() * 20f - 10f));
+      if (SharedVars.random.nextFloat() < .2f) {
         e.addComponent(new Root(true));
 
       }
@@ -169,7 +208,7 @@ public class ArtemisTest extends SimpleApplication {
     public void onAnalog(String name, float value, float tpf) {
       if (name.equals("Rotate")) {
         randomFill(100);
-        
+
       }
       if (name.equals("Right")) {
       }
@@ -188,12 +227,19 @@ public class ArtemisTest extends SimpleApplication {
         System.out.println("Alt 2");
       }
       if (name.equals("Alt 3")) {
-        System.out.println("Alt 3 = " + SharedVars.rootNode.getChildren().size() + " objects / " + world.getEntityManager().getTotalAdded() + " entities");
+        
 
       }
       if (name.equals("Alt 4")) {
-        System.out.println("Alt 4");
-        System.out.println("total entities: " + SharedVars.rootNode.getChildren().size());
+        System.out.println("Alt 4 = " + SharedVars.rootNode.getChildren().size() + " objects / " + world.getEntityManager().getTotalAdded() + " entities, removing all");
+        if (world.getEntityManager().getTotalAdded() > 0) {
+          for (int temp = 0; temp < world.getEntityManager().getActiveEntityCount(); temp++) {
+            Entity en = world.getEntity(temp);
+            if (en.isActive()) {
+              en.deleteFromWorld();
+            }
+          }
+        }
       }
     }
   };

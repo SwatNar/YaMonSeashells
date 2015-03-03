@@ -17,11 +17,9 @@ import engine.sprites.Sprite;
 import engine.sprites.SpriteImage;
 import engine.sprites.SpriteManager;
 import engine.sprites.SpriteMesh;
-import engine.util.FileUtilities;
 import engine.util.ImageUtilities;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -72,36 +70,52 @@ public class SpriteRenderer extends EntitySystem {
 
     spriteManager = new SpriteManager(1024, 1024, SpriteMesh.Strategy.KEEP_BUFFER, SharedVars.rootNode, SharedVars.assetManager);
 
-    Color COLOR_TO_MAKE_TRANSPARENT = new Color(120, 195, 128);
 
+
+    // Load these numbers from json
+    loadSpriteSheet("kenny nl/sheets/sheet.png");
+
+    SharedVars.appStateManager.attach(spriteManager);
+
+
+  }
+
+  private void loadSpriteSheet(String spriteSheet) {
+
+
+    // LOAD THESE FROM JSON
+    Color COLOR_TO_MAKE_TRANSPARENT = new Color(120, 195, 128);
     int numSpritesX = 14;
     int numSpritesY = 8;
-    int numSubSpritesX = 1;
-    int numSubSpritesY = 1;
-    //int numSpriteSheets = (numSpritesX / numSubSpritesX) * (numSpritesY / numSubSpritesY);
 
-    BufferedImage image = ImageUtilities.loadImage("kenny nl/sheets/sheet.png", SharedVars.assetManager);
+    BufferedImage image = ImageUtilities.loadImage(spriteSheet, SharedVars.assetManager);
     BufferedImage transparentImage = ImageUtilities.transformColorToTransparency(image, COLOR_TO_MAKE_TRANSPARENT);
     BufferedImage[][] split = ImageUtilities.split(transparentImage, numSpritesX, numSpritesY);
-    //ImageUtilities.viewImage(ImageUtilities.merge(split));
 
     for (int x = 0; x < numSpritesX; x++) {
       for (int y = 0; y < numSpritesY; y++) {
-         spriteImageList.add(spriteManager.createSpriteImage(split[x][y], false));
+
+        spriteImageList.add(spriteManager.createSpriteImage(split[x][y], false));
       }
     }
 
-    SharedVars.appStateManager.attach(spriteManager);
 
   }
 
   @Override
   protected void inserted(Entity e) {
     Position position = positionMapper.get(e);
-    
+
     Sprite sp = new Sprite(spriteImageList.get(SharedVars.random.nextInt(spriteImageList.size())));
     sp.setPosition(position.getX(), position.getY(), 0f);
     e.addComponent(new SpriteRendererSprite(sp));
+
+  }
+
+  @Override
+  protected void removed(Entity e) {
+    srsMapper.get(e).sprite.delete();
+            
 
   }
 }

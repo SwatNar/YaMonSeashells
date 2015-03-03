@@ -5,6 +5,7 @@ import com.artemis.Component;
 public class Velocity extends Component {
 	private float x;
 	private float y;
+  private float multiplier;
 
 	public Velocity() {
 	}
@@ -12,6 +13,7 @@ public class Velocity extends Component {
 	public Velocity(float x, float y) {
 		this.x = x;
 		this.y = y;
+    this.multiplier = 1f;
 	}
 
 	public float getX() {
@@ -22,12 +24,20 @@ public class Velocity extends Component {
 		return y;
 	}
 
+  public float getMultiplier() {
+    return multiplier;
+  }
+  
 	public void setX(float x) {
 		this.x = x;
 	}
 
 	public void setY(float y) {
 		this.y = y;
+	}
+
+  public void setMultiplier(float multiplier) {
+		this.multiplier = multiplier;
 	}
 
 	public void setVelocity(float x, float y) {
