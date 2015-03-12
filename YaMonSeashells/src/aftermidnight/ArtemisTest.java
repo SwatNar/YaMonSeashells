@@ -75,7 +75,14 @@ public class ArtemisTest extends SimpleApplication {
     Vector3f defaultView = new Vector3f(0, 0, 25f);
     getCamera().setLocation(defaultView);
     getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
-    getFlyByCamera().setMoveSpeed(25);
+    getFlyByCamera().setMoveSpeed(25f);
+    
+    float frustumSize = 1f;
+    
+    cam.setParallelProjection(true);
+    float aspect = (float) cam.getWidth() / cam.getHeight();
+    cam.setFrustum(-1000, 1000, -aspect * frustumSize, aspect * frustumSize, frustumSize, -frustumSize);
+        
     //cam.setFrustumPerspective(45f, settings.getWidth() / settings.getHeight() + 0f, 1f, 900f);
 
     // World setup

@@ -90,7 +90,7 @@ public class MapRenderer extends EntityProcessingSystem {
   @Override
   protected void inserted(Entity e) {
     // Load these numbers from json
-    float tilesize = .75f;
+    float tilesize = .075f;
     
     Map m = mapMapper.getSafe(e);
     if (m != null)
