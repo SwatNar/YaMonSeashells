@@ -5,15 +5,14 @@
 package aftermidnight.systems;
 
 import aftermidnight.SharedVars;
-import aftermidnight.components.PlatformRendererParticleEmitter;
+import aftermidnight.components.Map;
 import aftermidnight.components.Position;
 import aftermidnight.components.SpriteRendererSprite;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.EntitySystem;
 import com.artemis.annotations.Mapper;
-import com.artemis.utils.ImmutableBag;
+import com.artemis.systems.EntityProcessingSystem;
 import engine.sprites.Sprite;
 import engine.sprites.SpriteImage;
 import engine.sprites.SpriteManager;
@@ -27,31 +26,25 @@ import java.util.ArrayList;
  *
  * @author Daniel
  */
-public class SpriteRenderer extends EntitySystem {
+public class MapRenderer extends EntityProcessingSystem {
 
   @Mapper
-  ComponentMapper<Position> positionMapper;
-  @Mapper
-  ComponentMapper<SpriteRendererSprite> srsMapper;
-  @Mapper
-  ComponentMapper<PlatformRendererParticleEmitter> prpeMapper;
-  private SpriteManager spriteManager;
-  //private SpriteImage mySprite;
+  ComponentMapper<Map> mapMapper;
   ArrayList<SpriteImage> spriteImageList = new ArrayList<SpriteImage>();
+  private SpriteManager spriteManager;
+  private Sprite[][] sprites;
 
   @SuppressWarnings("unchecked")
-  public SpriteRenderer() {
-    super(Aspect.getAspectForAll(Position.class));
+  public MapRenderer() {
+    super(Aspect.getAspectForAll(Map.class));
   }
 
   @Override
-  protected void processEntities(ImmutableBag<Entity> entities) {
-    int s = entities.size();
-    for (int i = 0; i < s; i++) {
-      Entity e = entities.get(i);
-      Position position = positionMapper.get(e);
-      Sprite thisObject = srsMapper.get(e).getSprite();
-    }
+  protected void process(Entity e) {
+//      Entity e = entities.get(i);
+//      Position position = positionMapper.get(e);
+//      Sprite thisObject = srsMapper.get(e).getSprite();
+//    }
   }
 
   @Override
@@ -66,9 +59,6 @@ public class SpriteRenderer extends EntitySystem {
 
     spriteManager = new SpriteManager(1024, 1024, SpriteMesh.Strategy.KEEP_BUFFER, SharedVars.rootNode, SharedVars.assetManager);
 
-    // Load these numbers from json
-    loadSpriteSheet("2d/seasonal-tiles.png");
-
     SharedVars.appStateManager.attach(spriteManager);
 
 
@@ -76,7 +66,7 @@ public class SpriteRenderer extends EntitySystem {
 
   private void loadSpriteSheet(String spriteSheet) {
 
-    
+    //18x30
     // LOAD THESE FROM JSON
     Color COLOR_TO_MAKE_TRANSPARENT = new Color(157, 142, 136);
     int numSpritesX = 12;
@@ -85,12 +75,12 @@ public class SpriteRenderer extends EntitySystem {
     BufferedImage image = ImageUtilities.loadImage(spriteSheet, SharedVars.assetManager);
     BufferedImage transparentImage = ImageUtilities.transformColorToTransparency(image, COLOR_TO_MAKE_TRANSPARENT);
     BufferedImage[][] split = ImageUtilities.split(transparentImage, numSpritesX, numSpritesY);
-    
 
-    for (int x = 0; x < numSpritesY; x++) {
-      for (int y = 0; y < numSpritesX; y++) {
 
-        spriteImageList.add(spriteManager.createSpriteImage(split[y][x], false));
+      for (int y = 0; y < numSpritesY; y++) {
+    for (int x = 0; x < numSpritesX; x++) {
+
+        spriteImageList.add(spriteManager.createSpriteImage(split[x][y], false));
       }
     }
 
@@ -99,18 +89,33 @@ public class SpriteRenderer extends EntitySystem {
 
   @Override
   protected void inserted(Entity e) {
-    Position position = positionMapper.get(e);
-
-    Sprite sp = new Sprite(spriteImageList.get(SharedVars.random.nextInt(spriteImageList.size())));
-    sp.setPosition(position.getX(), position.getY(), 0f);
-    e.addComponent(new SpriteRendererSprite(sp));
-
+    // Load these numbers from json
+    float tilesize = .75f;
+    
+    Map m = mapMapper.getSafe(e);
+    if (m != null)
+    {
+      loadSpriteSheet(m.getTilesheet());
+      sprites = new Sprite[m.getWidth()][m.getHeight()];
+      for (int x = 0; x < m.getWidth(); x++) {
+        for (int y = 0; y < m.getHeight(); y++) {
+          int tile = m.getTile(x,y);
+          if (tile > 0)
+          {
+             tile--;
+             sprites[x][y] = new Sprite(spriteImageList.get(tile));
+             sprites[x][y].setPosition(x * tilesize, -y * tilesize, 0f);
+             
+          }
+        }
+      }
+    }
   }
 
   @Override
   protected void removed(Entity e) {
-    srsMapper.get(e).sprite.delete();
-            
+//    srsMapper.get(e).sprite.delete();
+
 
   }
 }

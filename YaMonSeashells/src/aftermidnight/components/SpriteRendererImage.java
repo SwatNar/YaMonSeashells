@@ -13,6 +13,7 @@ public class SpriteRendererImage extends Component {
   public SpriteRendererImage (SpriteImage spriteImage)
 	{
 		this.spriteImage = spriteImage;
+    System.out.println("made SpriteRendererImage");
 	}
 
 	public SpriteImage getSpriteImage() {
@@ -22,4 +23,6 @@ public class SpriteRendererImage extends Component {
 	public void setSpatial(SpriteImage spriteImage) {
 		this.spriteImage = spriteImage;
 	}
+  
+
 }

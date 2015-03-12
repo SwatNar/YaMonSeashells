@@ -1,6 +1,7 @@
 package aftermidnight.systems;
 
 import aftermidnight.SharedVars;
+import aftermidnight.components.PlatformRendererParticleEmitter;
 import aftermidnight.components.Position;
 import aftermidnight.components.Root;
 import aftermidnight.components.Velocity;
@@ -9,6 +10,12 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.effect.ParticleMesh;
+import com.jme3.effect.shapes.EmitterSphereShape;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 
 public class MovementSystem extends EntityProcessingSystem {
 
@@ -18,6 +25,8 @@ public class MovementSystem extends EntityProcessingSystem {
   ComponentMapper<Velocity> vm;
   @Mapper
   ComponentMapper<Root> rootMapper;
+  @Mapper
+  ComponentMapper<PlatformRendererParticleEmitter> prpeMapper;
 
   @SuppressWarnings("unchecked")
   public MovementSystem() {
@@ -28,16 +37,27 @@ public class MovementSystem extends EntityProcessingSystem {
 
     Position position = pm.get(e);
     Velocity velocity = vm.get(e);
-    if (SharedVars.paused)
-    {
+    if (SharedVars.paused) {
       return;
     }
-    
+
     Root rooted = rootMapper.getSafe(e);
-    if (rooted == null || !rooted.getRooted())
-    {
+    if (rooted == null || !rooted.getRooted()) {
       position.addX(velocity.getX() * velocity.getMultiplier() * world.getDelta());
       position.addY(velocity.getY() * velocity.getMultiplier() * world.getDelta());
+    }
+
+    PlatformRendererParticleEmitter prpe = prpeMapper.getSafe(e);
+    if (prpe == null && velocity.getMultiplier() >= 4f)
+    {
+      prpe = new PlatformRendererParticleEmitter();
+      SharedVars.rootNode.attachChild(prpe.particleEmitter);
+      //prpe = new PlatformRendererParticleEmitter()
+      e.addComponent(prpe);
+    
+    }
+    if (prpe != null) {
+      prpe.setPosition(position.getX(), position.getY(), 0f);
     }
   }
 }

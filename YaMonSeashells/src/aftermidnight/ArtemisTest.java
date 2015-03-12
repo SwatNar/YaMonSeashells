@@ -7,6 +7,8 @@ package aftermidnight;
 import aftermidnight.components.Position;
 import aftermidnight.components.Root;
 import aftermidnight.components.Velocity;
+import aftermidnight.components.Map;
+import aftermidnight.systems.MapRenderer;
 import aftermidnight.systems.SpriteRenderer;
 import aftermidnight.systems.MovementSystem;
 import aftermidnight.systems.OutOfBoundsSystem;
@@ -26,7 +28,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Quad;
 import java.util.Random;
 import java.util.logging.Level;
@@ -39,13 +40,10 @@ import java.util.logging.Logger;
 public class ArtemisTest extends SimpleApplication {
 
   private World world;
-  private boolean isRunning = true;
   public static SimpleApplication myApp;
   private float fieldOfView = 150f;
 
-
   public static void main(String[] args) {
-
 
     Logger.getLogger("").setLevel(Level.SEVERE);
 
@@ -74,7 +72,7 @@ public class ArtemisTest extends SimpleApplication {
 
     // Graphics
     //Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 750f);
-    Vector3f defaultView = new Vector3f(0, 0, 175f);
+    Vector3f defaultView = new Vector3f(0, 0, 25f);
     getCamera().setLocation(defaultView);
     getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
     getFlyByCamera().setMoveSpeed(25);
@@ -89,12 +87,24 @@ public class ArtemisTest extends SimpleApplication {
     world.setSystem(new MovementSystem());
     world.setSystem(new SpriteCollisionSystem());
     world.setSystem(new OutOfBoundsSystem());
-    world.setSystem(new SpriteRenderer()); // Sprite Render System
+    world.setSystem(new SpriteRenderer());
+    world.setSystem(new MapRenderer());
+    
     //world.setSystem(new PlatformerRenderer());
     world.initialize();
 
-    randomFill(5000);
+    //randomFill(5000);
 
+    Entity e = world.createEntity();
+
+    e.addComponent(new Position(5f, 5f));
+    e.addComponent(new Velocity(0f, 0f));
+//    e.addComponent(new PlatformRendererParticleEmitter());
+    world.addEntity(e);
+  
+    Entity map = world.createEntity();
+    map.addComponent(new Map());
+    world.addEntity(map);
     // Input
     //initKeys();
 
@@ -109,7 +119,7 @@ public class ArtemisTest extends SimpleApplication {
   private void drawBox(float size) {
     Quad quad = new Quad();
     quad.updateGeometry(size, size);
-    
+
     SharedVars.dumbCollisionGlobal = new Geometry("Box", quad);
     //red.setLocalTranslation(new Vector3f(1, 3, 1));
     Material mat2 = new Material(SharedVars.assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -122,17 +132,17 @@ public class ArtemisTest extends SimpleApplication {
 
     //mat2.setColor("Color", new ColorRGBA(r, g, b, .1f));
     SharedVars.dumbCollisionGlobal.setMaterial(mat2);
-    SharedVars.dumbCollisionGlobal.setLocalTranslation(0f-size/2, 0f-size/2, 0f);
+    SharedVars.dumbCollisionGlobal.setLocalTranslation(0f - size / 2, 0f - size / 2, 0f);
     SharedVars.dumbCollisionGlobal.setQueueBucket(Bucket.Transparent);
     SharedVars.dumbCollisionGlobal.rotate((float) Math.PI, 0f, 0f);
-    
-    SharedVars.rootNode.attachChild(SharedVars.dumbCollisionGlobal);    
-    
+
+    SharedVars.rootNode.attachChild(SharedVars.dumbCollisionGlobal);
+
   }
-  
+
   private void randomFill(int max) {
 
-    
+
     int min = 0;
 
     for (int x = min; x < max; x++) {
@@ -227,8 +237,6 @@ public class ArtemisTest extends SimpleApplication {
         System.out.println("Alt 2");
       }
       if (name.equals("Alt 3")) {
-        
-
       }
       if (name.equals("Alt 4")) {
         System.out.println("Alt 4 = " + SharedVars.rootNode.getChildren().size() + " objects / " + world.getEntityManager().getTotalAdded() + " entities, removing all");
