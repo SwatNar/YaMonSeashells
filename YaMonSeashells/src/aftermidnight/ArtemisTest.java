@@ -72,22 +72,22 @@ public class ArtemisTest extends SimpleApplication {
 
     // Graphics
     //Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 750f);
-    Vector3f defaultView = new Vector3f(0, 0, 25f);
+    //Vector3f defaultView = new Vector3f(0, 0, 25f);
+    Vector3f defaultView = new Vector3f(40f, -60f, 35f);
     getCamera().setLocation(defaultView);
     getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
     getFlyByCamera().setMoveSpeed(25f);
     
     float frustumSize = 1f;
     
-    cam.setParallelProjection(true);
+    //cam.setParallelProjection(true);
     float aspect = (float) cam.getWidth() / cam.getHeight();
-    cam.setFrustum(-1000, 1000, -aspect * frustumSize, aspect * frustumSize, frustumSize, -frustumSize);
+    //cam.setFrustum(-1000, 1000, -aspect * frustumSize, aspect * frustumSize, frustumSize, -frustumSize);
         
     //cam.setFrustumPerspective(45f, settings.getWidth() / settings.getHeight() + 0f, 1f, 900f);
 
     // World setup
 
-    drawBox(100f);
 
     world = new World();
     world.setSystem(new UserInputSystem());
@@ -102,12 +102,12 @@ public class ArtemisTest extends SimpleApplication {
 
     //randomFill(5000);
 
-    Entity e = world.createEntity();
+    //Entity e = world.createEntity();
 
-    e.addComponent(new Position(5f, 5f));
-    e.addComponent(new Velocity(0f, 0f));
+    //e.addComponent(new Position(5f, 5f));
+    //e.addComponent(new Velocity(0f, 0f));
 //    e.addComponent(new PlatformRendererParticleEmitter());
-    world.addEntity(e);
+    //world.addEntity(e);
   
     Entity map = world.createEntity();
     map.addComponent(new Map());

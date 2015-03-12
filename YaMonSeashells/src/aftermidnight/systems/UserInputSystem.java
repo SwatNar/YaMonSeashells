@@ -160,8 +160,8 @@ public class UserInputSystem extends EntitySystem {
   public AnalogListener analogListener = new AnalogListener() {
     public void onAnalog(String name, float value, float tpf) {
       if (name.equals("H")) {
-        SharedVars.input.put("Rotate", value);
-        System.out.println("put value " + value + " in rotate");
+        //SharedVars.input.put("Rotate", value);
+        //System.out.println("put value " + value + " in rotate");
       }
     }
   };
