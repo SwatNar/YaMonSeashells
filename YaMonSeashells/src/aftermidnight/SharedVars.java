@@ -9,6 +9,7 @@ package aftermidnight;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
+import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class SharedVars
   public static InputManager inputManager;
   public static Random random;
   public static Geometry dumbCollisionGlobal;
-  public static HashMap<String, Float> input = new HashMap<String, Float>();
+  //public static HashMap<String, Float> input = new HashMap<String, Float>();
+  public static Camera camera;
 }
 

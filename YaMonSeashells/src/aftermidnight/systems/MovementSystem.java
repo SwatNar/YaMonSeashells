@@ -43,6 +43,7 @@ public class MovementSystem extends EntityProcessingSystem {
 
     Root rooted = rootMapper.getSafe(e);
     if (rooted == null || !rooted.getRooted()) {
+      
       position.addX(velocity.getX() * velocity.getMultiplier() * world.getDelta());
       position.addY(velocity.getY() * velocity.getMultiplier() * world.getDelta());
     }
@@ -52,12 +53,25 @@ public class MovementSystem extends EntityProcessingSystem {
     {
       prpe = new PlatformRendererParticleEmitter();
       SharedVars.rootNode.attachChild(prpe.particleEmitter);
-      //prpe = new PlatformRendererParticleEmitter()
       e.addComponent(prpe);
     
     }
     if (prpe != null) {
       prpe.setPosition(position.getX(), position.getY(), 0f);
     }
+    
+    
+    //
+    // Shitty speed decrease
+    //
+    
+    if (velocity.getX() != 0f)
+    {
+      velocity.setX(velocity.getX()/6f*5f);
+    }
+    if (velocity.getY() != 0f)
+    {
+      velocity.setY(velocity.getY()/6f*5f);
+    }    
   }
 }

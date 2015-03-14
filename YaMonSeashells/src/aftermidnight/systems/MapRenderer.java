@@ -77,15 +77,11 @@ public class MapRenderer extends EntityProcessingSystem {
     BufferedImage transparentImage = ImageUtilities.transformColorToTransparency(image, COLOR_TO_MAKE_TRANSPARENT);
     BufferedImage[][] split = ImageUtilities.split(transparentImage, numSpritesX, numSpritesY);
 
-
     for (int y = 0; y < numSpritesY; y++) {
       for (int x = 0; x < numSpritesX; x++) {
-
         spriteImageList.add(spriteManager.createSpriteImage(split[x][y], false));
       }
     }
-
-
   }
 
   @Override
@@ -103,7 +99,7 @@ public class MapRenderer extends EntityProcessingSystem {
       for (int x = 0; x < m.getWidth(); x++) {
         for (int y = 0; y < m.getHeight(); y++) {
 
-          
+
           int tile = m.getTile(x, y);
 
           if (tile > 0) {

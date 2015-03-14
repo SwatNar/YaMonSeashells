@@ -51,6 +51,7 @@ public class SpriteRenderer extends EntitySystem {
       Entity e = entities.get(i);
       Position position = positionMapper.get(e);
       Sprite thisObject = srsMapper.get(e).getSprite();
+      thisObject.setPosition(position.getX(), position.getY(), 0f);
     }
   }
 
@@ -67,7 +68,7 @@ public class SpriteRenderer extends EntitySystem {
     spriteManager = new SpriteManager(1024, 1024, SpriteMesh.Strategy.KEEP_BUFFER, SharedVars.rootNode, SharedVars.assetManager);
 
     // Load these numbers from json
-    loadSpriteSheet("2d/seasonal-tiles.png");
+    loadSpriteSheet("2d/npc/refmap/vx_chara01_a.png");
 
     SharedVars.appStateManager.attach(spriteManager);
 
@@ -78,9 +79,10 @@ public class SpriteRenderer extends EntitySystem {
 
     
     // LOAD THESE FROM JSON
-    Color COLOR_TO_MAKE_TRANSPARENT = new Color(157, 142, 136);
+    Color COLOR_TO_MAKE_TRANSPARENT = new Color(120, 195, 128);
+    //Color COLOR_TO_MAKE_TRANSPARENT = new Color(157, 142, 136);
     int numSpritesX = 12;
-    int numSpritesY = 6;
+    int numSpritesY = 8;
 
     BufferedImage image = ImageUtilities.loadImage(spriteSheet, SharedVars.assetManager);
     BufferedImage transparentImage = ImageUtilities.transformColorToTransparency(image, COLOR_TO_MAKE_TRANSPARENT);
