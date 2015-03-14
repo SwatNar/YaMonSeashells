@@ -17,24 +17,24 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Map extends Component {
+public class MapComponent extends Component {
 
-  public Layer map;
+  public Map map;
 
   public String toString() {
     return "tldr";
 
   }
 
-  public Map() {
+  public MapComponent() {
     System.out.println("loading this map");
-    this.load("assets/daniel/maps/test.json");
+    this.load("assets/daniel/maps/lttp.json");
 //    this.loadSpriteSheet("2d/seasonal-tiles.png");
     
   }
 
   public String getTilesheet() {
-    return map.tilesheet;
+    return map.tilesets.get(0).image;
   }
 
   public int getWidth() {
@@ -46,7 +46,7 @@ public class Map extends Component {
   }
   
   public int getTile(int x, int y) {
-    return map.layer1.get(y * map.width + x);
+    return map.layers.get(0).data.get(y * map.width + x);
     
   }
 
@@ -58,24 +58,36 @@ public class Map extends Component {
 //    Collection<Integer> ints2 = gson.fromJson(json, collectionType);
 
     try {
-      BufferedReader br = new BufferedReader(new FileReader("assets/daniel/maps/test.json"));
-      map = gson.fromJson(br, Layer.class);
-
+      BufferedReader br = new BufferedReader(new FileReader("assets/daniel/maps/lttp.json"));
+      
+      map = gson.fromJson(br, Map.class);
+      System.out.println(map.toString());
     } catch (Exception ex) {
       System.out.println("MAP COMPONENT EXCEPTION: " + ex.toString());
     }
   }
 
-  private class Layer {
+  private class Map {
 
     public int height;
     public int width;
-    public List<Integer> layer1;
-    public String tilesheet;
-    
+    public List<Layer> layers;
+    public List<Tileset> tilesets;
 
     public String toString() {
-      return "height: " + height + ", width: " + width + ", layer: " + layer1.toString();
+      return "height: " + height + ", width: " + width + " and " + layers.size() + "layers";
     }
+    
+    public class Layer {
+      public List<Integer> data;
+    }
+    
+    public class Tileset {
+      public String image;
+      
+      
+    }
+    
+    
   }
 }

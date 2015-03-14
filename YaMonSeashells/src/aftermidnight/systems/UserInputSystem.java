@@ -118,6 +118,8 @@ public class UserInputSystem extends EntitySystem {
 //              }
 //            }
   //        }
+        } else if (name.equals("Q")) {
+          //setLocation(defaultView);
         } else if (name.equals("F")) {
           try {
             if (world.getEntityManager().getTotalAdded() > 0) {

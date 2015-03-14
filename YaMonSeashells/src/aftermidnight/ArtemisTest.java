@@ -7,7 +7,7 @@ package aftermidnight;
 import aftermidnight.components.Position;
 import aftermidnight.components.Root;
 import aftermidnight.components.Velocity;
-import aftermidnight.components.Map;
+import aftermidnight.components.MapComponent;
 import aftermidnight.systems.MapRenderer;
 import aftermidnight.systems.SpriteRenderer;
 import aftermidnight.systems.MovementSystem;
@@ -25,6 +25,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
@@ -72,9 +73,13 @@ public class ArtemisTest extends SimpleApplication {
 
     // Graphics
     //Vector3f defaultView = new Vector3f(fieldOfView / 2f, fieldOfView / 2f, 750f);
-    //Vector3f defaultView = new Vector3f(0, 0, 25f);
+    //Vector3f defaultView = new Vector3f(0, 0, 3f);
     Vector3f defaultView = new Vector3f(40f, -60f, 35f);
     getCamera().setLocation(defaultView);
+    float[] angles = cam.getRotation().toAngles(null);
+    //getCamera().setRotation(new Quaternion(new float[]{0f, -1f, 0f}));
+            
+    System.out.println(angles.length);
     getViewPort().setBackgroundColor(new ColorRGBA(0.1f, 0.1f, .1f, 1f));
     getFlyByCamera().setMoveSpeed(25f);
     
@@ -110,7 +115,7 @@ public class ArtemisTest extends SimpleApplication {
     //world.addEntity(e);
   
     Entity map = world.createEntity();
-    map.addComponent(new Map());
+    map.addComponent(new MapComponent());
     world.addEntity(map);
     // Input
     //initKeys();
