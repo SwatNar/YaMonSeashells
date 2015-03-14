@@ -10,23 +10,13 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
-import com.jme3.effect.ParticleEmitter;
-import com.jme3.effect.ParticleMesh;
-import com.jme3.effect.shapes.EmitterSphereShape;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 
 public class MovementSystem extends EntityProcessingSystem {
 
-  @Mapper
-  ComponentMapper<Position> pm;
-  @Mapper
-  ComponentMapper<Velocity> vm;
-  @Mapper
-  ComponentMapper<Root> rootMapper;
-  @Mapper
-  ComponentMapper<PlatformRendererParticleEmitter> prpeMapper;
+  @Mapper ComponentMapper<Position> pm;
+  @Mapper ComponentMapper<Velocity> vm;
+  @Mapper ComponentMapper<Root> rootMapper;
+  @Mapper ComponentMapper<PlatformRendererParticleEmitter> prpeMapper;
 
   @SuppressWarnings("unchecked")
   public MovementSystem() {

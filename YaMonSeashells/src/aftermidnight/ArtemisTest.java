@@ -41,7 +41,8 @@ public class ArtemisTest extends SimpleApplication {
   private World world;
   public static SimpleApplication myApp;
   private float fieldOfView = 150f;
-  
+  float frustumSize = 1f;
+
   public static void main(String[] args) {
 
     Logger.getLogger("").setLevel(Level.SEVERE);
@@ -56,7 +57,6 @@ public class ArtemisTest extends SimpleApplication {
 
   @Override
   public void simpleInitApp() {
-
     // Setup
     SharedVars.paused = true;
     SharedVars.assetManager = assetManager;
@@ -81,7 +81,6 @@ public class ArtemisTest extends SimpleApplication {
     
     flyCam.setEnabled(false);
     
-    float frustumSize = 1f;
     
     //cam.setParallelProjection(true);
     float aspect = (float) cam.getWidth() / cam.getHeight();
@@ -145,14 +144,12 @@ public class ArtemisTest extends SimpleApplication {
     SharedVars.dumbCollisionGlobal.setMaterial(mat2);
     SharedVars.dumbCollisionGlobal.setLocalTranslation(0f - size / 2, 0f - size / 2, 0f);
     SharedVars.dumbCollisionGlobal.setQueueBucket(Bucket.Transparent);
-    SharedVars.dumbCollisionGlobal.rotate((float) Math.PI, 0f, 0f);
-
+    //SharedVars.dumbCollisionGlobal.rotate((float) Math.PI, 0f, 0f);
     SharedVars.rootNode.attachChild(SharedVars.dumbCollisionGlobal);
 
   }
 
   private void randomFill(int max) {
-
 
     int min = 0;
 
