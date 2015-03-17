@@ -1,7 +1,6 @@
 package aftermidnight.systems;
 
 import aftermidnight.SharedVars;
-import aftermidnight.components.PlatformRendererParticleEmitter;
 import aftermidnight.components.Position;
 import aftermidnight.components.Root;
 import aftermidnight.components.Velocity;
@@ -16,7 +15,6 @@ public class MovementSystem extends EntityProcessingSystem {
   @Mapper ComponentMapper<Position> pm;
   @Mapper ComponentMapper<Velocity> vm;
   @Mapper ComponentMapper<Root> rootMapper;
-  @Mapper ComponentMapper<PlatformRendererParticleEmitter> prpeMapper;
 
   @SuppressWarnings("unchecked")
   public MovementSystem() {
@@ -38,19 +36,6 @@ public class MovementSystem extends EntityProcessingSystem {
       position.addY(velocity.getY() * velocity.getMultiplier() * world.getDelta());
     }
 
-    PlatformRendererParticleEmitter prpe = prpeMapper.getSafe(e);
-    if (prpe == null && velocity.getMultiplier() >= 4f)
-    {
-      prpe = new PlatformRendererParticleEmitter();
-      SharedVars.rootNode.attachChild(prpe.particleEmitter);
-      e.addComponent(prpe);
-    
-    }
-    if (prpe != null) {
-      prpe.setPosition(position.getX(), position.getY(), 0f);
-    }
-    
-    
     //
     // Shitty speed decrease
     //

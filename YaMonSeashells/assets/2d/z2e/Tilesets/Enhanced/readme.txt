@@ -1,0 +1,3 @@
+The game tiles were created by Wintermute. And they expand on the very basic 8 bit tiles. Most noteable inclusion is sloping ground. He will need to be consulted on how best to use his tiles in the game. All Action Stages are in cluded. as is the world map tiles with animated water etc.
+
+X Button Entry: Wanted to add this as an on/off option, essentially, when you move over an area that can be entered (town, action stage, palace etc) inctead of warping right in there, a little title comes up in the top left corner with the name of the area and you have to hit the 'X' button to enter. Area's that are secret are marked as '???'

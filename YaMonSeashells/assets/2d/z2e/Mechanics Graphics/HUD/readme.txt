@@ -1,0 +1,3 @@
+The HUD functions the same in both Enhanced and Classic except for a few little additions. The level icons below the magic and life now show how far along your life/magic is, from 'I' to 'IX' and there's a meter now for Attack, a small icon which charges up when you are able via the spin slash technique. The attack level icon goes under the attack meter, and whereas in the classic game there was a numerical 'XX/XX' meter for experience there is now a graphical meter. The lives icon is still located in the same place, top left corner.
+
+There should be an option to use the Enhanced or Classic HUD in quests.

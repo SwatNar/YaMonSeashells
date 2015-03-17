@@ -4,22 +4,18 @@
  */
 package aftermidnight.components;
 
-import aftermidnight.SharedVars;
 import com.artemis.Component;
 import com.google.gson.Gson;
-import engine.sprites.SpriteImage;
-import engine.sprites.SpriteManager;
-import engine.util.ImageUtilities;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MapComponent extends Component {
 
   public Map map;
+  public JsonObject jsonObject;
 
   public String toString() {
     return "tldr";
@@ -27,14 +23,21 @@ public class MapComponent extends Component {
   }
 
   public MapComponent() {
-    System.out.println("loading this map");
-    this.load("assets/daniel/maps/lttp.json");
-//    this.loadSpriteSheet("2d/seasonal-tiles.png");
-    
+    this("assets/daniel/maps/z2e mountain.json");
+
   }
 
-  public String getTilesheet() {
-    return map.tilesets.get(0).image;
+  public MapComponent(String map) {
+    System.out.println("MapComponent loading " + map);
+    this.load(map);
+
+  }
+
+  public Tileset getTileset(int which) {
+    Gson gs = new Gson();
+    Tileset ts = gs.fromJson(jsonObject.getAsJsonArray("tilesets").get(which), Tileset.class);
+    return ts;
+
   }
 
   public int getWidth() {
@@ -44,30 +47,36 @@ public class MapComponent extends Component {
   public int getHeight() {
     return map.height;
   }
-  
+
   public int getTile(int x, int y) {
     return map.layers.get(0).data.get(y * map.width + x);
-    
+
   }
 
   public void load(String filename) {
 
     Gson gson = new Gson();
-//    Response response = gson.fromJson(responseString, Response.class);
-//    Type collectionType = new TypeToken<Collection<Integer>>(){}.getType();
-//    Collection<Integer> ints2 = gson.fromJson(json, collectionType);
 
     try {
-      BufferedReader br = new BufferedReader(new FileReader("assets/daniel/maps/lttp.json"));
-      
-      map = gson.fromJson(br, Map.class);
-      System.out.println(map.toString());
+      BufferedReader br = new BufferedReader(new FileReader(filename));
+
+      StringBuilder builder = new StringBuilder();
+      String aux = "";
+
+      while ((aux = br.readLine()) != null) {
+        builder.append(aux);
+      }
+
+      String json = builder.toString();
+      jsonObject = new JsonParser().parse(json).getAsJsonObject();
+
+      map = gson.fromJson(json, Map.class);
     } catch (Exception ex) {
       System.out.println("MAP COMPONENT EXCEPTION: " + ex.toString());
     }
   }
 
-  private class Map {
+  public class Map {
 
     public int height;
     public int width;
@@ -77,17 +86,27 @@ public class MapComponent extends Component {
     public String toString() {
       return "height: " + height + ", width: " + width + " and " + layers.size() + "layers";
     }
-    
-    public class Layer {
-      public List<Integer> data;
+  }
+
+  public class Layer {
+
+    public List<Integer> data;
+  }
+
+  public class Tileset {
+
+    public String image;
+    public int tilewidth;
+    public int tileheight;
+    public int imagewidth;
+    public int imageheight;
+    public String transparentcolor;
+    //public ArrayList<Tiles> tiles;
+
+    public class Tiles {
+
+      public class Animation {
+      }
     }
-    
-    public class Tileset {
-      public String image;
-      
-      
-    }
-    
-    
   }
 }

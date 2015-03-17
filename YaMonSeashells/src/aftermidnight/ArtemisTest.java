@@ -9,6 +9,7 @@ import aftermidnight.components.Root;
 import aftermidnight.components.Velocity;
 import aftermidnight.components.MapComponent;
 import aftermidnight.components.UserControllable;
+import aftermidnight.systems.CameraSystem;
 import aftermidnight.systems.MapRenderer;
 import aftermidnight.systems.SpriteRenderer;
 import aftermidnight.systems.MovementSystem;
@@ -41,8 +42,7 @@ public class ArtemisTest extends SimpleApplication {
   private World world;
   public static SimpleApplication myApp;
   private float fieldOfView = 150f;
-  float frustumSize = 1f;
-
+  
   public static void main(String[] args) {
 
     Logger.getLogger("").setLevel(Level.SEVERE);
@@ -81,6 +81,7 @@ public class ArtemisTest extends SimpleApplication {
     
     flyCam.setEnabled(false);
     
+    float frustumSize = 1f;
     
     //cam.setParallelProjection(true);
     float aspect = (float) cam.getWidth() / cam.getHeight();
@@ -94,6 +95,7 @@ public class ArtemisTest extends SimpleApplication {
     world = new World();
     world.setSystem(new UserInputSystem());
     world.setSystem(new MovementSystem());
+    world.setSystem(new CameraSystem());
     world.setSystem(new SpriteCollisionSystem());
     world.setSystem(new OutOfBoundsSystem());
     world.setSystem(new SpriteRenderer());
@@ -129,6 +131,7 @@ public class ArtemisTest extends SimpleApplication {
   private void drawBox(float size) {
     Quad quad = new Quad();
     quad.updateGeometry(size, size);
+    
 
     SharedVars.dumbCollisionGlobal = new Geometry("Box", quad);
     //red.setLocalTranslation(new Vector3f(1, 3, 1));

@@ -29,7 +29,8 @@ public class SharedVars
   public static InputManager inputManager;
   public static Random random;
   public static Geometry dumbCollisionGlobal;
-  //public static HashMap<String, Float> input = new HashMap<String, Float>();
+  public static float frustumSize = 1;
+  
   public static Camera camera;
 }
 

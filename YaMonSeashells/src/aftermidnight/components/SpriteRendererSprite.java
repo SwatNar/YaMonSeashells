@@ -12,7 +12,7 @@ public class SpriteRendererSprite extends Component {
 
   public SpriteRendererSprite (Sprite sprite)
 	{
-		this.sprite = sprite;
+    this.sprite = sprite;
 	}
 
 	public Sprite getSprite() {

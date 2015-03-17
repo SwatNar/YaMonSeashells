@@ -15,7 +15,6 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.math.Vector3f;
 import java.util.ArrayList;
 
 public class UserInputSystem extends EntitySystem {
@@ -95,7 +94,7 @@ public class UserInputSystem extends EntitySystem {
 
     // Test multiple listeners per mapping
     SharedVars.inputManager.addListener(actionListener, "Space", "F", "G", "H", "J", "K", "L");
-    SharedVars.inputManager.addListener(analogListener, "W", "A", "S", "D");
+    SharedVars.inputManager.addListener(analogListener, "W", "A", "S", "D", "Q", "E");
 //    SharedVars.inputManager.addListener(analogListener, "My Action");
 
   }
@@ -103,16 +102,7 @@ public class UserInputSystem extends EntitySystem {
     public void onAction(String name, boolean pressed, float tpf) {
       if (!pressed) {
         if (name.equals("Space")) {
-//          if (world.getEntityManager().getTotalAdded() > 0) {
-//            for (int temp = 0; temp < world.getEntityManager().getActiveEntityCount(); temp++) {
-//              Entity en = world.getEntity(temp);
-//              if (en.isActive()) {
-//                Velocity theVel = vm.get(en);
-//                theVel.setVelocity(SharedVars.random.nextFloat() * 20f - 10f, SharedVars.random.nextFloat() * 20f - 10f);
-          //(new Velocity(rand.nextFloat() * 20f - 10f, rand.nextFloat() * 20f - 10f));
-//              }
-//            }
-          //        }
+
         } else if (name.equals("Q")) {
           //setLocation(defaultView);
         } else if (name.equals("F")) {
@@ -130,7 +120,12 @@ public class UserInputSystem extends EntitySystem {
         commands.add("MOVE UP");
       } else if (name.equals("S")) {
         commands.add("MOVE DOWN");
+      } else if (name.equals("Q")) {
+
+      } else if (name.equals("E")) {
+
       }
+
 
     }
   };
